@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_action :login_required
-  before_action :verified_email_required
   before_action :set_timezone
 
   rescue_from Authie::Session::InactiveSession, :with => :auth_session_error
@@ -27,12 +26,6 @@ class ApplicationController < ActionController::Base
       end
     else
       redirect_to login_path(:return_to => request.fullpath)
-    end
-  end
-
-  def verified_email_required
-    if logged_in? && !current_user.verified?
-      redirect_to verify_path(:return_to => request.fullpath)
     end
   end
 
